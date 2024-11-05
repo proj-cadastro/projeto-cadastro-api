@@ -1,0 +1,130 @@
+name: Pipeline CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checar repositório
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          fetch-depth: 0
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Instalar semver
+        run: npm install -g semver
+
+      - name: Criar nova tag caso não exista
+        id: create_initial_tag
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          git fetch --tags
+          if [ -z "$(git tag -l)" ]; then
+            git config --global user.name 'github-actions'
+            git config --global user.email 'github-actions@github.com'
+            git tag -a v0.0.0 -m "Initial release"
+            git push origin v0.0.0
+          fi
+
+      - name: Calcular nova versão
+        id: version
+        run: |
+          git fetch --tags
+          LAST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+          if [ -z "$LAST_TAG" ]; then
+            LAST_TAG="v0.0.0"
+          fi
+          echo "Versão Atual: $LAST_TAG"
+          
+          if [ "$LAST_TAG" = "v0.0.0" ]; then
+            COMMITS=$(git log --pretty=format:"%s")
+          else
+            COMMITS=$(git log ${LAST_TAG}..HEAD --pretty=format:"%s")
+          fi
+          
+          echo "Commits desde a última tag:"
+          echo "$COMMITS"
+          
+          # Inicializando variáveis
+          MAJOR=0
+          MINOR=0
+          PATCH=0
+          
+          # Analisando mensagens de commit
+          for COMMIT in "$COMMITS"; do
+            if [[ "$COMMIT" == *"BREAKING CHANGE"* ]]; then
+              MAJOR=1
+            elif [[ "$COMMIT" == *"Feat"* ]]; then
+              MINOR=1
+            elif [[ "$COMMIT" == *"Fix"* ]]; then
+              PATCH=1
+            fi
+          done
+          
+          # Calculando a nova versão usando semver
+          CURRENT_VERSION=${LAST_TAG#v}
+          NEW_VERSION=$CURRENT_VERSION
+          if [[ $MAJOR -eq 1 ]]; then
+            NEW_VERSION=$(semver -i major $CURRENT_VERSION)
+          elif [[ $MINOR -eq 1 ]]; then
+            NEW_VERSION=$(semver -i minor $CURRENT_VERSION)
+          elif [[ $PATCH -eq 1 ]]; then
+            NEW_VERSION=$(semver -i patch $CURRENT_VERSION)
+          fi
+          
+          echo "Nova versão: $NEW_VERSION"
+          echo "::set-output name=NEW_VERSION::$NEW_VERSION"
+
+      - name: Atualizar versão no package.json (se necessário)
+        run: |
+          CURRENT_VERSION=$(jq -r '.version' package.json)
+          if [ "$CURRENT_VERSION" != "${{ steps.version.outputs.NEW_VERSION }}" ]; then
+            npm version ${{ steps.version.outputs.NEW_VERSION }} --no-git-tag-version
+          else
+            echo "A versão no package.json já está atualizada."
+          fi
+        shell: bash
+
+      - name: Commit e push (se necessário)
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          
+          # Defina a URL remota com o token para autenticação
+          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/lucas-adami/cadastro-professores-web.git
+          
+          # Verifica se há mudanças antes de tentar o commit
+          if [ -n "$(git status --porcelain)" ]; then
+            git add package.json package-lock.json yarn.lock
+            git commit -m "chore(release): version ${{ steps.version.outputs.NEW_VERSION }}"
+            
+            # Verificar se a tag já existe antes de tentar criá-la
+            if git rev-parse "v${{ steps.version.outputs.NEW_VERSION }}" >/dev/null 2>&1; then
+              echo "A tag v${{ steps.version.outputs.NEW_VERSION }} já existe. Não será recriada."
+            else
+              git tag v${{ steps.version.outputs.NEW_VERSION }}
+              git push origin master --tags
+            fi
+          else
+            echo "Nenhuma mudança para commitar. Workflow concluído sem alterações."
+            exit 0
+          fi
