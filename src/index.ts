@@ -2,6 +2,7 @@ import express  from "express";
 import { AppDataSource } from "./data-source";
 import { userRouter } from "./modules/Users/userRoute";
 import { professorRouter } from "./modules/Professors/professorRoute";
+import { authRouter } from "./modules/Auth/authRoute";
 
 
 AppDataSource.initialize().then(() => {
@@ -10,8 +11,8 @@ AppDataSource.initialize().then(() => {
 
     app.use(express.json())
 
+    //app.use("/auth", authRouter);
     app.use("/users", userRouter)
-
     app.use("/professors", professorRouter);
 
     return app.listen(API_PORT, () => {

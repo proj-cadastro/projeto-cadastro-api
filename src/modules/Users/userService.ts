@@ -26,3 +26,8 @@ export async function createUserService(userData: UserType) {
 export async function deleteUserByIdService (id: ObjectId) {
     return await userRepository.delete(id)
 }
+
+export async function findUserByEmail(email: string) {
+    return await userRepository.findOneBy({ email });
+  }
+  
