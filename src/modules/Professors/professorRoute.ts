@@ -1,6 +1,8 @@
 import { Router } from "express";
 import * as ProfessorController from "./professorController";
 import { Request, Response } from "express";
+import { validateSchema } from "../../middlewares/validateSchema";
+import { professorSchema } from "../../middlewares/validation/professorValidation";
 
 const professorRouter = Router();
 
@@ -13,6 +15,7 @@ professorRouter.get("/:id", (req: Request, res: Response) => {
 });
 
 professorRouter.post("/", (req: Request, res: Response) => {
+    validateSchema(professorSchema),
     ProfessorController.createProfessor(req, res);
 });
 
