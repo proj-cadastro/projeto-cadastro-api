@@ -12,7 +12,8 @@ export async function findAllUsersService() {
 }
 
 export async function findUserByIdService (id: ObjectId){
-    return await userRepository.findOneBy({ id })
+    const result = await userRepository.findOneBy({ _id: id });
+    return result;
 }
 
 export async function createUserService(userData: UserType) {
@@ -24,10 +25,10 @@ export async function createUserService(userData: UserType) {
 }
 
 export async function deleteUserByIdService (id: ObjectId) {
-    return await userRepository.delete(id)
+    return await userRepository.delete({ _id: id })
 }
 
 export async function findUserByEmail(email: string) {
     return await userRepository.findOneBy({ email });
-  }
+}
   

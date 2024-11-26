@@ -14,8 +14,7 @@ userRouter.get("/:id", (req: Request, res: Response) => {
     UserController.findUserById(req, res);
 });
 
-userRouter.post("/", (req: Request, res: Response) => {
-    validateSchema(userSchema),
+userRouter.post("/", validateSchema(userSchema), (req: Request, res: Response) => {
     UserController.createUser(req, res);
 });
 

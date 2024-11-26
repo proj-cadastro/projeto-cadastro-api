@@ -10,7 +10,7 @@ export enum UserAcess {
 @Entity('Users') 
 export class UserEntity {
     @ObjectIdColumn()
-    id!: ObjectId
+    _id!: ObjectId
 
     @Column()
     username!: string
