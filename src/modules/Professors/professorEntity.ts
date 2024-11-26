@@ -5,7 +5,7 @@ import { titrationEnum } from "../../types/titrationEnum";
 @Entity("Professors")
 export class ProfessorEntity {
     @ObjectIdColumn()
-    id!: ObjectId;
+    _id!: ObjectId;
 
     @Column()
     name!: string;

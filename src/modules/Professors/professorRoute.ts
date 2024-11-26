@@ -14,8 +14,7 @@ professorRouter.get("/:id", (req: Request, res: Response) => {
     ProfessorController.findProfessorById(req, res);
 });
 
-professorRouter.post("/", (req: Request, res: Response) => {
-    validateSchema(professorSchema),
+professorRouter.post("/", validateSchema(professorSchema), (req: Request, res: Response) => {
     ProfessorController.createProfessor(req, res);
 });
 

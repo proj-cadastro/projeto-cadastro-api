@@ -2,7 +2,7 @@ import { ObjectId } from 'mongodb';
 import { titrationEnum } from './titrationEnum';
 
 export type ProfessorType = {
-  id: ObjectId;             
+  id?: ObjectId;             
   name: string;               
   email: string;                      
   titration: titrationEnum;       

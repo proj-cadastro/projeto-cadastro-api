@@ -8,10 +8,10 @@ export const professorSchema = yup.object().shape({
     .mixed()
     .oneOf(Object.values(titrationEnum), "Invalid titration value")
     .required("Titration is required"),
-  coursesId: yup.array().of(yup.string().required("Course ID must be a string")).required("Courses are required"),
+  coursesId: yup.array().of(yup.string().required("Course ID must be a string")),
   unitId: yup.string().required("Unit ID is required"),
   reference: yup.string().required("Reference is required"),
   lattes: yup.string().url("Invalid Lattes URL").required("Lattes URL is required"),
-  activityStatus: yup.string().required("Activity status is required"),
+  activityStatus: yup.string(),
   notes: yup.string().required("Notes are required"),
 });

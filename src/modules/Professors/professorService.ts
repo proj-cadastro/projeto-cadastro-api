@@ -10,7 +10,7 @@ export async function findAllProfessorsService() {
 }
 
 export async function findByIdService(id: ObjectId) {
-    return await professorRepository.findOneBy({ id });
+    return await professorRepository.findOneBy({ _id: id });
 }
 
 export async function createProfessorService(professorData: ProfessorType) {
@@ -20,10 +20,10 @@ export async function createProfessorService(professorData: ProfessorType) {
 }
 
 export async function updateProfessorService(id: ObjectId, data: Partial<ProfessorType>) {
-    await professorRepository.update({ id }, data);
+    await professorRepository.update({ _id: id }, data);
     return await findByIdService(id); 
 }
 
 export async function deleteProfessorByIdService(id: ObjectId) {
-    return await professorRepository.delete({ id });
+    return await professorRepository.delete({ _id: id });
 }
