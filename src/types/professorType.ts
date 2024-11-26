@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { titrationEnum } from './titrationEnum';
+import { activityStatusEnum } from './activityStatusEnum';
 
 export type ProfessorType = {
   id?: ObjectId;             
@@ -10,7 +11,7 @@ export type ProfessorType = {
   unitId?: string;         
   reference: string;         
   lattes: string;             
-  activityStatus: string;    
+  activityStatus: activityStatusEnum;    
   notes: string;              
 };
 
