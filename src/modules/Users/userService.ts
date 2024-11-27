@@ -1,6 +1,6 @@
 // userService.ts
 import { AppDataSource } from "../../data-source";
-import { UserAcess } from "./userEntity";
+import { UserAcess } from "../../types/userAcess";
 import { ObjectId } from "mongodb";
 import { UserEntity } from "./userEntity";
 import { UserType } from "../../types/userType";

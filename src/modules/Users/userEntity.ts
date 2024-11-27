@@ -1,11 +1,7 @@
 import { Entity, ObjectIdColumn, Column, BeforeInsert, BeforeUpdate } from "typeorm";
 import { ObjectId } from "mongodb";
 import * as bcrypt from 'bcrypt';
-
-export enum UserAcess {
-    USER = 'user',
-    ADMIN = 'admin'
-}
+import { UserAcess } from "../../types/userAcess";
 
 @Entity('Users') 
 export class UserEntity {

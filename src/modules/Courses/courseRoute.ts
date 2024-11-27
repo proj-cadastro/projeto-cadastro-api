@@ -3,26 +3,27 @@ import * as courseController from "./courseController";
 import { Request, Response } from "express";
 import { validateSchema } from "../../middlewares/validateSchema";
 import { courseSchema } from './../../middlewares/validation/courseValidation';
+import { authenticateToken } from "../../middlewares/authMiddleware";
 
 const courseRouter = Router();
 
-courseRouter.get("/", (req: Request, res: Response) => {
+courseRouter.get("/", authenticateToken, (req: Request, res: Response) => {
   courseController.findAllCourses(req, res);
 });
 
-courseRouter.get("/:id", (req: Request, res: Response) => {
+courseRouter.get("/:id", authenticateToken, (req: Request, res: Response) => {
   courseController.findCourseById(req, res);
 });
 
-courseRouter.post("/", validateSchema(courseSchema), (req: Request, res: Response) => {
+courseRouter.post("/", authenticateToken, validateSchema(courseSchema), (req: Request, res: Response) => {
   courseController.createCourse(req, res);
 });
 
-courseRouter.put("/:id", (req: Request, res: Response) => {
+courseRouter.put("/:id", authenticateToken, validateSchema(courseSchema), (req: Request, res: Response) => {
   courseController.updateCourse(req, res);
 });
 
-courseRouter.delete("/:id", (req: Request, res: Response) => {
+courseRouter.delete("/:id", authenticateToken, (req: Request, res: Response) => {
   courseController.deleteCourse(req, res);
 });
 
