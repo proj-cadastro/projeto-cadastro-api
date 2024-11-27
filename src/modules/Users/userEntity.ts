@@ -1,0 +1,30 @@
+import { Entity, ObjectIdColumn, Column, BeforeInsert, BeforeUpdate } from "typeorm";
+import { ObjectId } from "mongodb";
+import * as bcrypt from 'bcrypt';
+import { UserAcess } from "../../types/userAcess";
+
+@Entity('Users') 
+export class UserEntity {
+    @ObjectIdColumn()
+    _id!: ObjectId
+
+    @Column()
+    username!: string
+
+    @Column({ unique: true })
+    email!: string
+
+    @Column({ select: false })
+    password!: string
+
+    @Column({ enum: UserAcess, default: UserAcess.USER })
+    type!: UserAcess
+
+    @BeforeInsert()
+    @BeforeUpdate()
+    async hashPassword() {
+        if (this.password) {
+            this.password = await bcrypt.hash(this.password, 10)
+        }
+    }
+}
