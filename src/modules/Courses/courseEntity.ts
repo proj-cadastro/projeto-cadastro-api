@@ -6,7 +6,7 @@ import { CourseEnum } from "../../types/courseEnum";
 @Entity("Courses")
 export class CourseEntity {
   @ObjectIdColumn()
-  id!: ObjectId;
+  _id!: ObjectId;
 
   @Column({ unique: true })
   name!: string;

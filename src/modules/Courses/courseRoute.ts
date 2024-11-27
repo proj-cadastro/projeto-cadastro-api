@@ -10,8 +10,11 @@ courseRouter.get("/", (req: Request, res: Response) => {
   courseController.findAllCourses(req, res);
 });
 
-courseRouter.post("/", (req: Request, res: Response) => {
-  validateSchema(courseSchema),
+courseRouter.get("/:id", (req: Request, res: Response) => {
+  courseController.findCourseById(req, res);
+});
+
+courseRouter.post("/", validateSchema(courseSchema), (req: Request, res: Response) => {
   courseController.createCourse(req, res);
 });
 

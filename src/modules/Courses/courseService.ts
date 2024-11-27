@@ -19,19 +19,23 @@ export async function createCourseService(courseData: CourseType) {
 }
 
 export async function updateCourseService(courseId: ObjectId, courseData: CourseType) {
-  const course = await courseRepository.findOneBy({ id: courseId });
+  const course = await courseRepository.findOneBy({ _id: courseId });
 
   if (!course) return null;
 
-  await courseRepository.update({ id: courseId }, courseData);
-  return await courseRepository.findOneBy({ id: courseId });
+  await courseRepository.update({ _id: courseId }, courseData);
+  return await courseRepository.findOneBy({ _id: courseId });
 }
 
 export async function deleteCourseService(courseId: ObjectId) {
-  const course = await courseRepository.findOneBy({ id: courseId });
+  const course = await courseRepository.findOneBy({ _id: courseId });
 
   if (!course) return null;
 
-  await courseRepository.delete({ id: courseId });
+  await courseRepository.delete({ _id: courseId });
   return course;
+}
+
+export async function findCourseByIdService(courseId: ObjectId): Promise<CourseType | null> {
+  return await courseRepository.findOneBy({ _id: courseId });
 }

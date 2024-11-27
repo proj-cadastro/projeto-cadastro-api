@@ -29,7 +29,7 @@ export const professorSchema = yup.object().shape({
           "Each course ID must be a valid ObjectId",
           (value) => ObjectId.isValid(value || "")
         )
-        .required("Course ID is required")
+        .notRequired()
     ),
     
   unitId: yup
@@ -53,7 +53,7 @@ export const professorSchema = yup.object().shape({
   activityStatus: yup
     .mixed()
     .oneOf(Object.values(activityStatusEnum), "Invalid activity status")
-    .required("Activity status is required"),
+    .notRequired(),
 
   notes: yup.string(),
 });

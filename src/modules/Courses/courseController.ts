@@ -16,6 +16,27 @@ export async function findAllCourses(req: Request, res: Response) {
   }
 }
 
+export async function findCourseById(req: Request, res: Response) {
+  try {
+    const id: string = req.params.id;
+    if (!id)
+      return res.status(400).send({ message: "Course id not provided." });
+    
+    if (!ObjectId.isValid(id))
+      return res.status(400).send({ message: "Invalid ObjectId format" });
+    
+    const course = await courseService.findCourseByIdService(new ObjectId(id));
+    
+    if (!course)
+      return res.status(404).send({ message: "Course not found" });
+    
+    return res.status(200).send(course);
+    
+  } catch (error) {
+    return res.status(400).send({ message: "Bad request at function findCourseById" });
+  }
+}
+
 export async function createCourse(req: Request, res: Response) {
   try {
     const courseData = req.body;

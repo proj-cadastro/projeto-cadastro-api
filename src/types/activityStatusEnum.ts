@@ -3,5 +3,4 @@ export enum activityStatusEnum{
     INACTIVE = "inactive",
     PENDING = "pending",
     ON_LEAVE = "on-leave",
-
 }

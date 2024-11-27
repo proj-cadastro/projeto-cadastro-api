@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 import { UserAcess } from "../modules/Users/userEntity";
 
 export type UserType = {
-    id: ObjectId
+    id?: ObjectId
     username: string
     email: string
     password: string
