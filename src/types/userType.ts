@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { UserAcess } from "../modules/Users/userEntity";
+import { UserAcess } from "./userAcess";
 
 export type UserType = {
     id?: ObjectId
