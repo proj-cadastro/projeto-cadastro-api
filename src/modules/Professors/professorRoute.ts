@@ -7,23 +7,23 @@ import { authenticateToken } from "../../middlewares/authMiddleware";
 
 const professorRouter = Router();
 
-professorRouter.get("/", authenticateToken, (req: Request, res: Response) => {
+professorRouter.get("/", /*authenticateToken,*/ (req: Request, res: Response) => {
     ProfessorController.findAllProfessors(req, res);
 });
 
-professorRouter.get("/:id", authenticateToken, (req: Request, res: Response) => {
+professorRouter.get("/:id", /*authenticateToken,*/ (req: Request, res: Response) => {
     ProfessorController.findProfessorById(req, res);
 });
 
-professorRouter.post("/", authenticateToken, validateSchema(professorSchema), (req: Request, res: Response) => {
+professorRouter.post("/", /*authenticateToken,*/ validateSchema(professorSchema), (req: Request, res: Response) => {
     ProfessorController.createProfessor(req, res);
 });
 
-professorRouter.put("/:id", authenticateToken, (req: Request, res: Response) => {
+professorRouter.put("/:id", /*authenticateToken,*/ (req: Request, res: Response) => {
     ProfessorController.updateProfessor(req, res);
 });
 
-professorRouter.delete("/:id", authenticateToken, validateSchema(professorSchema), (req: Request, res: Response) => {
+professorRouter.delete("/:id", /*authenticateToken,*/ validateSchema(professorSchema), (req: Request, res: Response) => {
     ProfessorController.deleteProfessor(req, res);
 });
 

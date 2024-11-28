@@ -4,7 +4,7 @@ import { UserAcess } from "../types/userAcess";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 
-export const authenticateToken = (req: Request, res: Response, next: NextFunction): void => {
+export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
