@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { AppDataSource } from "./data-source";
 import { userRouter } from "./modules/Users/userRoute";
 import { professorRouter } from "./modules/Professors/professorRoute";
@@ -10,6 +11,8 @@ AppDataSource.initialize()
   .then(() => {
     const app = express();
     const API_PORT = process.env.API_PORT ?? 3000;
+
+    app.use(cors());
 
     app.use(express.json());
 
