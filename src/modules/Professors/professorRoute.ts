@@ -23,7 +23,7 @@ professorRouter.put("/:id", /*authenticateToken,*/ (req: Request, res: Response)
     ProfessorController.updateProfessor(req, res);
 });
 
-professorRouter.delete("/:id", /*authenticateToken,*/ validateSchema(professorSchema), (req: Request, res: Response) => {
+professorRouter.delete("/:id", /*authenticateToken,*/ (req: Request, res: Response) => {
     ProfessorController.deleteProfessor(req, res);
 });
 
