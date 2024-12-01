@@ -7,11 +7,11 @@ import { authenticateToken } from "../../middlewares/authMiddleware";
 
 const userRouter = Router();
 
-userRouter.get("/", /*authenticateToken,*/ (req: Request, res: Response) => {
+userRouter.get("/", authenticateToken, (req: Request, res: Response) => {
     UserController.findAllUsers(req, res);
 });
 
-userRouter.get("/:id", /*authenticateToken,*/ (req: Request, res: Response) => {
+userRouter.get("/:id", authenticateToken, (req: Request, res: Response) => {
     UserController.findUserById(req, res);
 });
 
@@ -19,7 +19,7 @@ userRouter.post("/", validateSchema(userSchema), (req: Request, res: Response) =
     UserController.createUser(req, res);
 });
 
-userRouter.delete("/:id", /*authenticateToken,*/ (req: Request, res: Response) => {
+userRouter.delete("/:id", authenticateToken, (req: Request, res: Response) => {
     UserController.deleteUser(req, res);
 });
 

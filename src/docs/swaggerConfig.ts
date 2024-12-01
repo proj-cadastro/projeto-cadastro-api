@@ -7,7 +7,7 @@ import courseDocs from "./courseDocs";
 const PORT = process.env.API_PORT ? process.env. API_PORT : 3000
 
 const SERVER_URL = process.env.NODE_ENV === "production"
-  ? "https://sua-api-no-render.onrender.com"
+  ? "https://projeto-cadastro-api.onrender.com"
   : `http://localhost:${PORT}`;
 
 const swaggerDefinition = {
