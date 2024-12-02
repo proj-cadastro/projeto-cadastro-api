@@ -132,3 +132,24 @@ jobs:
             echo "Nenhuma mudança para commitar. Workflow concluído sem alterações."
             exit 0
           fi
+          
+      - name: Efetuar login no Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Construir imagem Docker
+      - name: Criar imagem Docker
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/projeto-cadastro-api:${{ env.new_version }} .
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/projeto-cadastro-api:${{ env.new_version }} ${{ secrets.DOCKERHUB_USERNAME }}/projeto-cadastro-api:latest
+
+      # Enviar imagem para Docker Hub
+      - name: Efetuar push da imagem
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/projeto-cadastro-api:${{ env.new_version }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/projeto-cadastro-api:latest
+
+
+
